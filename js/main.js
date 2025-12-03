@@ -274,8 +274,17 @@ function showToast(message) {
 
     const toast = document.createElement('div');
     toast.className = 'toast';
-    toast.innerHTML = `<span>${message}</span>`;
+    // Add icon and message
+    toast.innerHTML = `
+        <i data-lucide="check-circle" style="color: var(--accent-color); min-width: 20px;"></i>
+        <span>${message}</span>
+    `;
     document.body.appendChild(toast);
+
+    // Initialize icons
+    if (window.lucide) {
+        lucide.createIcons();
+    }
 
     // Trigger reflow
     toast.offsetHeight;
@@ -443,22 +452,70 @@ function setupEventListeners() {
     }
 
     // Checkout
+    // Checkout
+    const checkoutModal = document.getElementById('checkout-modal');
+    const closeCheckoutBtn = document.getElementById('close-checkout-modal');
+    const checkoutForm = document.getElementById('checkout-form');
+
+    function openCheckoutModal() {
+        if (checkoutModal) {
+            checkoutModal.classList.add('active');
+            overlay.classList.add('active');
+            closeCart(); // Close the cart sidebar
+        }
+    }
+
+    function closeCheckoutModal() {
+        if (checkoutModal) {
+            checkoutModal.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+    }
+
+    if (closeCheckoutBtn) {
+        closeCheckoutBtn.addEventListener('click', closeCheckoutModal);
+    }
+
+    // Close on overlay click (already handled by existing overlay listener, but need to ensure it closes checkout too)
+    if (overlay) {
+        overlay.addEventListener('click', closeCheckoutModal);
+    }
+
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', () => {
             if (cart.length === 0) {
-                alert('Your cart is empty!');
+                showToast('Your cart is empty!');
                 return;
             }
+            openCheckoutModal();
+        });
+    }
+
+    if (checkoutForm) {
+        checkoutForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('checkout-name').value;
+            const phone = document.getElementById('checkout-phone').value;
+            const city = document.getElementById('checkout-city').value;
+            const address = document.getElementById('checkout-address').value;
 
             // Construct WhatsApp message
-            let message = "Hello, I would like to place an order:\n\n";
+            let message = `*New Order from ${name}*\n\n`;
+            message += `*Customer Details:*\n`;
+            message += `Name: ${name}\n`;
+            message += `Phone: ${phone}\n`;
+            message += `City: ${city}\n`;
+            message += `Address: ${address}\n\n`;
+
+            message += `*Order Details:*\n`;
             cart.forEach(item => {
                 const deliveryText = item.delivery === 'express' ? 'Express' : 'Standard';
                 message += `- ${item.name} (${item.brand}) - ${item.size} - ${deliveryText} x${item.quantity}: $${(item.price * item.quantity).toFixed(2)}\n`;
             });
 
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            message += `\nTotal: $${total.toFixed(2)}`;
+            message += `\n*Total: $${total.toFixed(2)}*`;
 
             // WhatsApp number (Morocco)
             const phoneNumber = "212617515466";
@@ -466,6 +523,9 @@ function setupEventListeners() {
 
             // Open WhatsApp
             window.open(whatsappUrl, '_blank');
+
+            // Optional: Clear cart or close modal
+            closeCheckoutModal();
         });
     }
 }

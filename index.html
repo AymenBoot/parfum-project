@@ -141,6 +141,36 @@
         </div>
     </div>
 
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="product-modal" style="height: auto; max-height: 90vh;">
+        <button id="close-checkout-modal" class="icon-btn close-modal-btn"><i data-lucide="x"></i></button>
+        <div class="modal-content" style="display: block; padding: 40px; overflow-y: auto;">
+            <h2
+                style="font-family: var(--font-heading); margin-bottom: 30px; text-align: center; color: var(--accent-color);">
+                Checkout</h2>
+            <form id="checkout-form" class="contact-form">
+                <div class="form-group">
+                    <label for="checkout-name">Full Name</label>
+                    <input type="text" id="checkout-name" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="checkout-phone">Phone Number</label>
+                    <input type="tel" id="checkout-phone" placeholder="+212 6..." required>
+                </div>
+                <div class="form-group">
+                    <label for="checkout-city">City</label>
+                    <input type="text" id="checkout-city" placeholder="Casablanca" required>
+                </div>
+                <div class="form-group">
+                    <label for="checkout-address">Address</label>
+                    <textarea id="checkout-address" rows="3" placeholder="Street address, apartment, etc."
+                        required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Confirm Order via WhatsApp</button>
+            </form>
+        </div>
+    </div>
+
     <div id="overlay" class="overlay"></div>
 
     <!-- Footer -->
