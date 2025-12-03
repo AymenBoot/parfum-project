@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - L'Essence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">L'Essence</a>
+            <div class="nav-links">
+                <a href="index.html#shop">Shop</a>
+                <a href="about.html" class="active">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="nav-icons">
+                <button id="search-btn" class="icon-btn" style="display: none;"><i data-lucide="search"></i></button>
+                <button id="cart-btn" class="icon-btn">
+                    <i data-lucide="shopping-bag"></i>
+                    <span id="cart-count" class="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="about-hero">
+        <div class="container">
+            <h1>Our Story</h1>
+            <p>Redefining luxury through the art of scent.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container about-content">
+        <section class="about-section">
+            <div class="about-grid">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80"
+                        alt="Perfume bottles">
+                </div>
+                <div class="about-text-content">
+                    <h2>The Essence of Luxury</h2>
+                    <p>
+                        L'Essence was born from a passion for fine fragrances and a desire to make luxury accessible. We
+                        believe
+                        that everyone deserves to experience the artistry of the world's most prestigious perfumers
+                        without the
+                        commitment of a full bottle.
+                    </p>
+                    <p>
+                        Our curated collection features over 50 premium scents, meticulously decanted into high-quality
+                        travel
+                        atomizers. Whether you're exploring new olfactory territories or keeping your signature scent
+                        close at
+                        hand, L'Essence offers an authentic and convenient way to indulge in luxury.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <div class="section-header-center">
+                <h2>Why Choose Us</h2>
+                <p>Experience the difference of authentic luxury.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i data-lucide="check-circle" size="32"></i></div>
+                    <h3>100% Authentic</h3>
+                    <p>We guarantee that all our fragrances are 100% authentic, decanted directly from the original
+                        bottles.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i data-lucide="package" size="32"></i></div>
+                    <h3>Premium Packaging</h3>
+                    <p>Each decant is carefully packaged in a high-quality glass atomizer to preserve the fragrance's
+                        integrity.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i data-lucide="truck" size="32"></i></div>
+                    <h3>Fast Shipping</h3>
+                    <p>We offer reliable shipping options to ensure your new favorite scent arrives quickly and safely.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button id="close-cart" class="icon-btn"><i data-lucide="x"></i></button>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <!-- Cart items injected by JS -->
+            <div class="empty-cart-msg">Your cart is empty</div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-amount">$0.00</span>
+            </div>
+            <button id="checkout-btn" class="btn btn-primary btn-full">Checkout</button>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-col">
+                <h3>L'Essence</h3>
+                <p>Luxury perfume decants for the modern connoisseur.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Links</h3>
+                <a href="index.html#shop">Shop</a>
+                <a href="about.html">About Us</a>
+                <a href="index.html#shipping">Shipping</a>
+                <a href="index.html#returns">Returns</a>
+            </div>
+            <div class="footer-col">
+                <h3>Contact</h3>
+                <p>support@lessence.com</p>
+                <p>+212 6 17 51 54 66</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 L'Essence. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/products.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - L'Essence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">L'Essence</a>
+            <div class="nav-links">
+                <a href="index.html#shop">Shop</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="nav-icons">
+                <button id="search-btn" class="icon-btn" style="display: none;"><i data-lucide="search"></i></button>
+                <button id="cart-btn" class="icon-btn">
+                    <i data-lucide="shopping-bag"></i>
+                    <span id="cart-count" class="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container" style="padding: 120px 20px 60px; min-height: 60vh;">
+        <div id="product-details-container" class="product-details-layout"
+            style="display: flex; gap: 60px; max-width: 1200px; margin: 0 auto;">
+            <!-- Content injected by JS -->
+            <div style="width: 100%; text-align: center; padding: 40px;">Loading product details...</div>
+        </div>
+    </main>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button id="close-cart" class="icon-btn"><i data-lucide="x"></i></button>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <!-- Cart items injected by JS -->
+            <div class="empty-cart-msg">Your cart is empty</div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-amount">$0.00</span>
+            </div>
+            <button id="checkout-btn" class="btn btn-primary btn-full">Checkout</button>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-col">
+                <h3>L'Essence</h3>
+                <p>Luxury perfume decants for the modern connoisseur.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Links</h3>
+                <a href="index.html#shop">Shop</a>
+                <a href="about.html">About Us</a>
+                <a href="index.html#shipping">Shipping</a>
+                <a href="index.html#returns">Returns</a>
+            </div>
+            <div class="footer-col">
+                <h3>Contact</h3>
+                <p>support@lessence.com</p>
+                <p>+212 6 17 51 54 66</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 L'Essence. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/products.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/product-details.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

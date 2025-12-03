@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Essence - Luxury Perfume Decants</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">L'Essence</a>
+            <div class="nav-links">
+                <a href="#shop">Shop</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="nav-icons">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search perfumes...">
+                    <button id="search-btn" class="icon-btn"><i data-lucide="search"></i></button>
+                </div>
+                <button id="cart-btn" class="icon-btn">
+                    <i data-lucide="shopping-bag"></i>
+                    <span id="cart-count" class="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content scroll-animate">
+            <h1>Discover Your Signature Scent</h1>
+            <p>Experience luxury fragrances in convenient 5ml decants. Explore over 50+ premium scents.</p>
+            <a href="#shop" class="btn btn-primary">Explore Collection</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container main-content">
+        <!-- Filters -->
+        <aside class="filters scroll-animate">
+            <div class="filter-group">
+                <h3>Gender</h3>
+                <div id="gender-filters" class="filter-options">
+                    <!-- Gender filters injected by JS -->
+                </div>
+            </div>
+            <div class="filter-group">
+                <h3>Category</h3>
+                <div id="category-filters" class="filter-options">
+                    <!-- Categories injected by JS -->
+                </div>
+            </div>
+            <div class="filter-group">
+                <h3>Price Range</h3>
+                <input type="range" id="price-range" min="0" max="100" value="100">
+                <div class="price-labels">
+                    <span>$0</span>
+                    <span id="price-value">$100</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Product Grid -->
+        <section id="shop" class="product-section scroll-animate">
+            <div class="section-header">
+                <h2>Our Collection</h2>
+                <div class="sort-options">
+                    <select id="sort-select">
+                        <option value="featured">Featured</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+            <div id="product-grid" class="product-grid">
+                <!-- Products injected by JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button id="close-cart" class="icon-btn"><i data-lucide="x"></i></button>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <!-- Cart items injected by JS -->
+            <div class="empty-cart-msg">Your cart is empty</div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-amount">$0.00</span>
+            </div>
+            <button id="checkout-btn" class="btn btn-primary btn-full">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="product-modal">
+        <button id="close-modal" class="icon-btn close-modal-btn"><i data-lucide="x"></i></button>
+        <div class="modal-content">
+            <div class="modal-image">
+                <img id="modal-img" src="" alt="Product Image">
+            </div>
+            <div class="modal-details">
+                <div id="modal-brand" class="product-brand"></div>
+                <h2 id="modal-name" class="modal-title"></h2>
+                <div id="modal-price" class="modal-price"></div>
+                <div id="modal-desc" class="modal-description"></div>
+
+                <div class="option-group">
+                    <div class="option-title">Select Size</div>
+                    <div class="option-selector">
+                        <label class="option-btn selected">
+                            <input type="radio" name="size" value="5ml" checked>
+                            5ml Decant
+                        </label>
+                        <label class="option-btn">
+                            <input type="radio" name="size" value="10ml">
+                            10ml Decant
+                        </label>
+                    </div>
+                </div>
+
+                <button id="modal-add-btn" class="btn btn-primary btn-full add-to-cart-page-btn">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-col">
+                <h3>L'Essence</h3>
+                <p>Luxury perfume decants for the modern connoisseur.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Links</h3>
+                <a href="#shop">Shop</a>
+                <a href="about.html">About Us</a>
+                <a href="#shipping">Shipping</a>
+                <a href="#returns">Returns</a>
+            </div>
+            <div class="footer-col">
+                <h3>Contact</h3>
+                <p>support@lessence.com</p>
+                <p>+212 6 17 51 54 66</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 L'Essence. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/products.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
