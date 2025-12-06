@@ -62,7 +62,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
 
     /* Navbar */
     .nav-links {
@@ -101,16 +101,68 @@
     }
 
     .filters {
-        position: relative;
+        position: fixed;
         top: 0;
-        margin-bottom: 40px;
-        z-index: 10;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 15, 26, 0.98);
+        z-index: 200;
+        padding: 80px 20px 20px;
+        overflow-y: auto;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        display: block;
+    }
+
+    .filters.active {
+        transform: translateX(0);
+    }
+
+    .close-filters-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: none;
+        border: none;
+        color: var(--white);
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: block;
+    }
+
+    .mobile-only {
+        display: inline-flex !important;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border: 1px solid var(--glass-border);
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--white);
+        cursor: pointer;
     }
 
     /* Product Grid */
     .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .product-card .product-image {
+        height: 180px;
+    }
+
+    .product-details {
+        padding: 15px;
+    }
+
+    .product-name {
+        font-size: 1rem;
+    }
+
+    .product-price {
+        font-size: 1rem;
     }
 
     /* Cart Sidebar */
@@ -146,7 +198,40 @@
 
 @media (max-width: 480px) {
     .product-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .product-card .product-image {
+        height: 150px;
+    }
+
+    .product-details {
+        padding: 10px;
+    }
+
+    .product-name {
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+
+    .product-footer {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    .product-price {
+        font-size: 0.95rem;
+        margin-bottom: 0;
+    }
+
+    .add-to-cart-btn {
+        width: 100%;
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        text-align: center;
+        margin-left: 0;
     }
 
     .section-header {

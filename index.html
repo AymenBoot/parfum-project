@@ -11,6 +11,7 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
@@ -18,6 +19,9 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container nav-container">
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <i data-lucide="menu"></i>
+            </button>
             <a href="#" class="logo">L'Essence</a>
             <div class="nav-links">
                 <a href="#shop">Shop</a>
@@ -36,6 +40,11 @@
             </div>
         </div>
     </nav>
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#shop">Shop</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </div>
 
     <!-- Hero Section -->
     <header class="hero">
@@ -76,6 +85,10 @@
         <section id="shop" class="product-section scroll-animate">
             <div class="section-header">
                 <h2>Our Collection</h2>
+                <button id="filter-toggle-btn" class="btn btn-outline mobile-only"
+                    style="display: none; margin-bottom: 10px;">
+                    <i data-lucide="filter"></i> Filters
+                </button>
                 <div class="sort-options">
                     <select id="sort-select">
                         <option value="featured">Featured</option>

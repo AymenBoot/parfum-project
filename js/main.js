@@ -404,6 +404,23 @@ function closeCart() {
 
 // Event Listeners
 function setupEventListeners() {
+    // Mobile Menu
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close menu when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+        });
+    }
+
     // Cart Toggle
     if (cartBtn) cartBtn.addEventListener('click', openCart);
     if (closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
@@ -428,6 +445,25 @@ function setupEventListeners() {
         sortSelect.addEventListener('change', (e) => {
             currentSort = e.target.value;
             renderProducts();
+        });
+    }
+
+    // Filter Toggle (Mobile)
+    const filterToggleBtn = document.getElementById('filter-toggle-btn');
+    const filtersSidebar = document.querySelector('.filters');
+
+    if (filterToggleBtn && filtersSidebar) {
+        // Create close button for filters if it doesn't exist
+        if (!filtersSidebar.querySelector('.close-filters-btn')) {
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'close-filters-btn';
+            closeBtn.innerHTML = '<i data-lucide="x"></i>';
+            closeBtn.onclick = () => filtersSidebar.classList.remove('active');
+            filtersSidebar.prepend(closeBtn);
+        }
+
+        filterToggleBtn.addEventListener('click', () => {
+            filtersSidebar.classList.add('active');
         });
     }
 
