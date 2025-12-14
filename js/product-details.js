@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const productId = parseInt(params.get('id'));
     const container = document.getElementById('product-details-container');
@@ -8,9 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const product = products.find(p => p.id === productId);
-
-    if (!product) {
+    let product;
+    try {
+        const response = await fetch(`http://127.0.0.1:5000/api/products/${productId}`);
+        if (!response.ok) throw new Error('Product not found');
+        product = await response.json();
+    } catch (error) {
+        console.error('Error fetching product:', error);
         container.innerHTML = '<p>Product not found.</p>';
         return;
     }
@@ -29,14 +33,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render
     container.innerHTML = `
-        <div class="product-image-large" style="flex: 1;">
-            <img src="${product.image}" alt="${product.name}" style="width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <div class="product-image-large">
+            <img src="${product.image}" alt="${product.name}">
         </div>
-        <div class="product-info-large" style="flex: 1;">
-            <div class="product-brand" style="font-size: 1rem; margin-bottom: 10px;">${product.brand}</div>
-            <h1 style="font-family: var(--font-heading); font-size: 3rem; margin-bottom: 20px;">${product.name}</h1>
-            <div class="product-price-large" style="font-size: 2rem; color: var(--accent-color); font-weight: 600; margin-bottom: 30px;">
-                $${product.price.toFixed(2)}
+        <div class="product-info-large">
+            <div class="product-brand">${product.brand}</div>
+            <h1>${product.name}</h1>
+            <div class="product-price-large">
+                ${product.price.toFixed(2)} MAD
+            </div>
+            <div class="stock-info-large ${product.stock <= 0 ? 'out-of-stock' : product.stock <= 5 ? 'low-stock' : 'in-stock'}" style="margin-bottom: 30px;">
+                ${product.stock <= 0 ? 'Out of Stock' : `In Stock: ${product.stock} items available`}
             </div>
 
             <div class="product-description" style="margin-bottom: 30px; line-height: 1.8; color: var(--light-text);">
@@ -74,13 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         </label>
                         <label class="option-btn">
                             <input type="radio" name="delivery" value="express">
-                            <span>Express (1-2 Days) - +$5.00</span>
+                            <span>Express (1-2 Days) - +50.00 MAD</span>
                         </label>
                     </div>
                 </div>
 
-                <button id="add-to-cart-page-btn" class="btn btn-primary btn-full add-to-cart-page-btn">
-                    Add to Cart - $${product.price.toFixed(2)}
+                <button id="add-to-cart-page-btn" class="btn btn-primary btn-full add-to-cart-page-btn" ${product.stock <= 0 ? 'disabled style="background: #ccc; cursor: not-allowed;"' : ''}>
+                    ${product.stock <= 0 ? 'Sold Out' : `Add to Cart - ${product.price.toFixed(2)} MAD`}
                 </button>
             </div>
         </div>
@@ -103,13 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Delivery Fee
         let deliveryFee = 0;
         if (currentDelivery === 'express') {
-            deliveryFee = 5.00;
+            deliveryFee = 50.00;
         }
 
         let finalPrice = basePrice + deliveryFee;
 
-        priceDisplay.textContent = `$${finalPrice.toFixed(2)}`;
-        btn.textContent = `Add to Cart - $${finalPrice.toFixed(2)}`;
+        priceDisplay.textContent = `${finalPrice.toFixed(2)} MAD`;
+        btn.textContent = `Add to Cart - ${finalPrice.toFixed(2)} MAD`;
         currentPrice = finalPrice;
     }
 

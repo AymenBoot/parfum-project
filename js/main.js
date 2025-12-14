@@ -1,11 +1,13 @@
 // Main JS Logic
+let products = [];
+
 
 // State
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let currentCategory = 'all';
 let currentGender = 'all';
 let currentSort = 'featured';
-let maxPrice = 100;
+let maxPrice = 1000;
 let searchQuery = '';
 
 // DOM Elements
@@ -27,13 +29,28 @@ const checkoutBtn = document.getElementById('checkout-btn');
 
 // Initialize
 function init() {
-    if (categoryFilters) renderCategories();
-    if (genderFilters) renderGenderFilters();
-    if (productGrid) renderProducts();
+    fetchProducts();
     updateCartUI();
     setupEventListeners();
     initScrollAnimations();
     initNavbarScroll();
+}
+
+async function fetchProducts() {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/products');
+        if (!response.ok) throw new Error('Failed to fetch products');
+        products = await response.json();
+
+        if (categoryFilters) renderCategories();
+        if (genderFilters) renderGenderFilters();
+        if (productGrid) renderProducts();
+    } catch (error) {
+        console.error('Error loading products:', error);
+        if (productGrid) {
+            productGrid.innerHTML = '<p class="error-msg">Failed to load products. Please check if backend is running.</p>';
+        }
+    }
 }
 
 // Scroll Animations
@@ -165,7 +182,7 @@ function openProductModal(productId) {
 
     // Price Logic
     let currentPrice = product.price;
-    modalPrice.textContent = `$${currentPrice.toFixed(2)}`;
+    modalPrice.textContent = `${currentPrice.toFixed(2)} MAD`;
 
     // Handle Size Change
     sizeInputs.forEach(input => {
@@ -175,7 +192,7 @@ function openProductModal(productId) {
             } else {
                 currentPrice = product.price;
             }
-            modalPrice.textContent = `$${currentPrice.toFixed(2)}`;
+            modalPrice.textContent = `${currentPrice.toFixed(2)} MAD`;
         };
     });
 
@@ -244,26 +261,40 @@ function renderProducts() {
         return;
     }
 
-    productGrid.innerHTML = filtered.map((product, index) => `
+    productGrid.innerHTML = filtered.map((product, index) => {
+        const isOutOfStock = product.stock <= 0;
+        const lowStock = product.stock > 0 && product.stock <= 5;
+
+        return `
         <div class="product-card fade-in" style="animation-delay: ${index * 0.05}s">
-            <a href="product.html?id=${product.id}" style="text-decoration: none; color: inherit; display: block;">
+            <a href="${isOutOfStock ? 'javascript:void(0)' : `product.html?id=${product.id}`}" 
+               style="text-decoration: none; color: inherit; display: block; position: relative; ${isOutOfStock ? 'cursor: not-allowed; opacity: 0.7;' : ''}"
+               ${isOutOfStock ? 'onclick="return false;"' : ''}>
+                ${isOutOfStock ? '<div class="stock-badge out-of-stock"><i data-lucide="x-circle" style="width: 12px; height: 12px;"></i> Out of Stock</div>' :
+                lowStock ? `<div class="stock-badge low-stock"><i data-lucide="alert-circle" style="width: 12px; height: 12px;"></i> Only ${product.stock} left</div>` :
+                    `<div class="stock-badge in-stock"><i data-lucide="package" style="width: 12px; height: 12px;"></i> ${product.stock} left</div>`}
                 <div class="product-image">
-                    <img src="${product.image}" alt="${product.name}" loading="lazy">
+                    <img src="${product.image}" alt="${product.name}" loading="lazy" style="${isOutOfStock ? 'opacity: 0.6;' : ''}">
                 </div>
                 <div class="product-info">
                     <div class="product-brand">${product.brand}</div>
                     <h3 class="product-name">${product.name}</h3>
                     <div class="product-notes">${product.notes}</div>
                     <div class="product-footer">
-                        <span class="product-price">$${product.price.toFixed(2)}</span>
-                        <button class="add-to-cart-btn" onclick="event.preventDefault(); addToCart(${product.id})">
-                            Add to Cart
+                        <span class="product-price">${product.price.toFixed(2)} MAD</span>
+                        <button class="add-to-cart-btn" onclick="event.preventDefault(); addToCart(${product.id})" ${isOutOfStock ? 'disabled style="background: #ccc; cursor: not-allowed;"' : ''}>
+                            ${isOutOfStock ? 'Sold Out' : 'Add to Cart'}
                         </button>
                     </div>
                 </div>
             </a>
         </div>
-    `).join('');
+    `}).join('');
+
+    // Initialize icons
+    if (window.lucide) {
+        lucide.createIcons();
+    }
 }
 
 // Toast Notification
@@ -359,7 +390,7 @@ function updateCartUI() {
     // Update Items
     if (cart.length === 0) {
         cartItemsContainer.innerHTML = '<div class="empty-cart-msg">Your cart is empty</div>';
-        cartTotalAmount.textContent = '$0.00';
+        cartTotalAmount.textContent = '0.00 MAD';
         return;
     }
 
@@ -369,7 +400,7 @@ function updateCartUI() {
             <div class="cart-item-details">
                 <div class="cart-item-name">${item.name}</div>
                 <div class="cart-item-price">
-                    ${item.size} - $${item.price.toFixed(2)}
+                    ${item.size} - ${item.price.toFixed(2)} MAD
                     ${item.delivery === 'express' ? '<br><span style="font-size: 0.8em; color: var(--accent-color);">Express Delivery</span>' : ''}
                 </div>
                 <div class="cart-item-controls">
@@ -386,7 +417,7 @@ function updateCartUI() {
 
     // Update Total
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    cartTotalAmount.textContent = '$' + total.toFixed(2);
+    cartTotalAmount.textContent = total.toFixed(2) + ' MAD';
 }
 
 // UI Interaction
@@ -436,7 +467,7 @@ function setupEventListeners() {
     if (priceRange) {
         priceRange.addEventListener('input', (e) => {
             maxPrice = parseInt(e.target.value);
-            priceValue.textContent = '$' + maxPrice;
+            priceValue.textContent = maxPrice + ' MAD';
             renderProducts();
         });
     }
@@ -453,6 +484,7 @@ function setupEventListeners() {
     const filtersSidebar = document.querySelector('.filters');
 
     if (filterToggleBtn && filtersSidebar) {
+        /* 
         // Create close button for filters if it doesn't exist
         if (!filtersSidebar.querySelector('.close-filters-btn')) {
             const closeBtn = document.createElement('button');
@@ -461,6 +493,7 @@ function setupEventListeners() {
             closeBtn.onclick = () => filtersSidebar.classList.remove('active');
             filtersSidebar.prepend(closeBtn);
         }
+        */
 
         filterToggleBtn.addEventListener('click', () => {
             filtersSidebar.classList.add('active');
@@ -528,13 +561,29 @@ function setupEventListeners() {
     }
 
     if (checkoutForm) {
-        checkoutForm.addEventListener('submit', (e) => {
+        checkoutForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const name = document.getElementById('checkout-name').value;
             const phone = document.getElementById('checkout-phone').value;
             const city = document.getElementById('checkout-city').value;
             const address = document.getElementById('checkout-address').value;
+
+            // Notify Backend to decrease stock
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ items: cart.map(item => ({ id: item.id, quantity: item.quantity })) })
+                });
+
+                if (!response.ok) {
+                    console.error('Failed to update stock');
+                    showToast('Warning: Issue updating stock, proceed with caution');
+                }
+            } catch (err) {
+                console.error('Error updating stock:', err);
+            }
 
             // Construct WhatsApp message
             let message = `*New Order from ${name}*\n\n`;
@@ -547,11 +596,11 @@ function setupEventListeners() {
             message += `*Order Details:*\n`;
             cart.forEach(item => {
                 const deliveryText = item.delivery === 'express' ? 'Express' : 'Standard';
-                message += `- ${item.name} (${item.brand}) - ${item.size} - ${deliveryText} x${item.quantity}: $${(item.price * item.quantity).toFixed(2)}\n`;
+                message += `- ${item.name} (${item.brand}) - ${item.size} - ${deliveryText} x${item.quantity}: ${(item.price * item.quantity).toFixed(2)} MAD\n`;
             });
 
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            message += `\n*Total: $${total.toFixed(2)}*`;
+            message += `\n*Total: ${total.toFixed(2)} MAD*`;
 
             // WhatsApp number (Morocco)
             const phoneNumber = "212617515466";
@@ -560,7 +609,10 @@ function setupEventListeners() {
             // Open WhatsApp
             window.open(whatsappUrl, '_blank');
 
-            // Optional: Clear cart or close modal
+            // Clear cart and close modal
+            localStorage.removeItem('cart');
+            cart = [];
+            updateCartUI();
             closeCheckoutModal();
         });
     }
