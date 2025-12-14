@@ -13,6 +13,13 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 # Initialize DB
 init_db(app)
 
+# Initialize DB
+init_db(app)
+
+@app.route('/api/health', methods=['GET'])
+def health_check():
+    return jsonify({"status": "healthy", "message": "Backend is running"})
+
 @app.route('/api/products', methods=['GET'])
 def get_products():
     try:
