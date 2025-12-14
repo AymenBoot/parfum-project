@@ -37,8 +37,12 @@ function init() {
 }
 
 async function fetchProducts() {
+    const apiBaseUrl = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        ? 'http://127.0.0.1:5000'
+        : '';
+
     try {
-        const response = await fetch('http://127.0.0.1:5000/api/products');
+        const response = await fetch(`${apiBaseUrl}/api/products`);
         if (!response.ok) throw new Error('Failed to fetch products');
         products = await response.json();
 
@@ -570,8 +574,12 @@ function setupEventListeners() {
             const address = document.getElementById('checkout-address').value;
 
             // Notify Backend to decrease stock
+            const apiBaseUrl = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+                ? 'http://127.0.0.1:5000'
+                : '';
+
             try {
-                const response = await fetch('http://127.0.0.1:5000/api/orders', {
+                const response = await fetch(`${apiBaseUrl}/api/orders`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ items: cart.map(item => ({ id: item.id, quantity: item.quantity })) })

@@ -9,8 +9,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     let product;
+    const apiBaseUrl = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        ? 'http://127.0.0.1:5000'
+        : '';
+
     try {
-        const response = await fetch(`http://127.0.0.1:5000/api/products/${productId}`);
+        const response = await fetch(`${apiBaseUrl}/api/products/${productId}`);
         if (!response.ok) throw new Error('Product not found');
         product = await response.json();
     } catch (error) {
